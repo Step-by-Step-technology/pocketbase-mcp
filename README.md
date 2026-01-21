@@ -20,7 +20,7 @@ npm run build
 
 ### Configuration rapide
 
-1. **Créez un fichier de configuration MCP** (`~/.claude_desktop_config.json` ou équivalent):
+1. **Créez un fichier de configuration MCP** (`~/.cline_desktop_config.json` ou équivalent):
 
 ```json
 {
@@ -38,7 +38,7 @@ npm run build
 }
 ```
 
-1. **Redémarrez votre client MCP** (Claude Desktop, Cursor, etc.)
+1. **Redémarrez votre client MCP** (Cline Desktop, Cursor, etc.)
 
 2. **Testez l'installation**:
 
@@ -61,7 +61,9 @@ pocketbase-mcp
 
 ## ✨ Fonctionnalités
 
-### ✅ Outils Disponibles
+### ✅ Outils Disponibles (20 outils complets)
+
+#### 🏗️ Outils de Migration (13 outils)
 
 | Outil | Description | Statut |
 |-------|-------------|--------|
@@ -78,6 +80,20 @@ pocketbase-mcp
 | `pocketbase-view-migration` | Affiche le contenu d'une migration | ✅ Existant |
 | `pocketbase-list-collections` | Liste toutes les collections PocketBase | ✅ Existant |
 | `pocketbase-view-collection` | Affiche les détails d'une collection | ✅ Existant |
+
+#### 📊 Outils CRUD (7 outils)
+
+| Outil | Description | Statut |
+|-------|-------------|--------|
+| `pocketbase-fetch-record` | Récupère un record spécifique d'une collection PocketBase | ✅ **NOUVEAU** |
+| `pocketbase-list-records` | Liste tous les records d'une collection avec pagination | ✅ **NOUVEAU** |
+| `pocketbase-create-record` | Crée un nouveau record dans une collection PocketBase | ✅ **NOUVEAU** |
+| `pocketbase-update-record` | Met à jour un record existant dans une collection PocketBase | ✅ **NOUVEAU** |
+| `pocketbase-get-collection-schema` | Obtient le schéma (champs et types) d'une collection | ✅ **NOUVEAU** |
+| `pocketbase-upload-file` | Upload un fichier vers une collection PocketBase | ✅ **NOUVEAU** |
+| `pocketbase-download-file` | Télécharge un fichier depuis une collection PocketBase | ✅ **NOUVEAU** |
+
+**Total: 20 outils MCP complets** - Migration + CRUD + Gestion de fichiers
 
 ## 🚀 Installation (Alternative)
 
@@ -159,9 +175,9 @@ npm run build
 node dist/index.js
 ```
 
-### Configuration Claude Desktop
+### Configuration Cline Desktop
 
-Ajoutez à `~/.claude_desktop_config.json`:
+Ajoutez à `~/.cline_desktop_config.json`:
 
 ```json
 {
@@ -485,7 +501,7 @@ Pour tester le serveur MCP:
 # Démarrer le serveur en mode développement
 npm run dev
 
-# Puis utiliser les outils via Claude Desktop ou autre client MCP
+# Puis utiliser les outils via Cline Desktop ou autre client MCP
 ```
 
 ## 🔧 Développement
@@ -617,17 +633,44 @@ Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
 
 - [Model Context Protocol](https://modelcontextprotocol.io) pour le framework MCP
 - [PocketBase](https://pocketbase.io) pour l'excellente base de données
-- La communauté Claude pour les outils d'IA
+- La communauté Cline pour les outils d'IA
+
+## ⚠️ Comportements spécifiques de PocketBase
+
+### Champs number avec la contrainte "required"
+
+**Problème identifié:** Dans PocketBase, pour un champ de type `number` avec la contrainte `required: true`, la valeur `0` est considérée comme "blank" (vide) et est rejetée avec l'erreur "Cannot be blank."
+
+**Explication:** Ce n'est pas une propriété `nonZero` distincte, mais un comportement spécifique de PocketBase pour les champs numériques requis. La valeur `0` est traitée comme une valeur "falsy" et donc considérée comme vide.
+
+**Solution:** Si vous avez besoin d'autoriser la valeur `0` (par exemple pour des produits gratuits), vous devez:
+
+1. Définir le champ avec `required: false`
+2. Valider côté application que le champ est fourni (même s'il est 0)
+
+**Exemple de migration corrigée:**
+
+```json
+{
+  "collectionName": "products",
+  "fields": [
+    {
+      "name": "price",
+      "type": "number",
+      "required": false,  // ← false pour autoriser 0
+      "min": 0,
+      "max": 1000000
+    }
+  ]
+}
+```
+
+**Alternative:** Utiliser une validation personnalisée côté application pour s'assurer que le champ n'est pas `null` ou `undefined`, tout en acceptant la valeur `0`.
 
 ## 📞 Support
 
 Pour les questions et le support:
 
 - Ouvrir une issue sur GitHub
-- Consulter la documentation complète dans `GUIDE_COMPLET.md`
 
 ---
-
-**✨ Fonctionnalité Unique:** Ce serveur MCP préserve soigneusement l'outil original `pocketbase-execute-migration` qui fonctionne parfaitement pour les créations, tout en ajoutant de nouveaux outils pour les modifications et suppressions sans dégrader les fonctionnalités existantes.
-
-**🚀 Prêt pour la production:** Testé avec succès sur des migrations réelles de création, modification et suppression de collections PocketBase.

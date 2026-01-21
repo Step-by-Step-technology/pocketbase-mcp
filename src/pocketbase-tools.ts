@@ -16,6 +16,7 @@ import {
   createRemoveFieldMigrationFile,
   createRevertMigrationFile
 } from './pocketbase-migration.js';
+import { registerPocketbaseCrudTools } from './pocketbase-crud-tools.js';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -26,6 +27,7 @@ const FieldSchema = z.object({
   required: z.boolean().optional().describe('Le champ est obligatoire'),
   max: z.number().optional().describe('Longueur max (pour text)'),
   min: z.number().optional().describe('Valeur min (pour number)'),
+  nonZero: z.boolean().optional().describe('Contrainte non zero (pour les champs number)'),
   values: z.array(z.string()).optional().describe('Options (pour select)'),
   collectionId: z.string().optional().describe('ID collection (pour relation)'),
   maxSelect: z.number().optional().describe('Nombre max de sélections'),
@@ -1401,4 +1403,7 @@ export function registerPocketbaseTools(server: any) {
       }
     }
   );
+
+  // Enregistrer les outils CRUD
+  registerPocketbaseCrudTools(server);
 }

@@ -15,6 +15,7 @@ interface FieldDefinition {
   required?: boolean;
   max?: number;
   min?: number;
+  nonZero?: boolean; // Pour les champs number
   values?: string[]; // Pour les champs select
   collectionId?: string; // Pour les relations
   maxSelect?: number; // Pour les fichiers et relations
@@ -66,6 +67,7 @@ function generateFieldCode(field: FieldDefinition): string {
     case 'number':
       if (field.min !== undefined) props.min = field.min;
       if (field.max !== undefined && field.max !== 0) props.max = field.max;
+      if (field.nonZero !== undefined) props.nonZero = field.nonZero;
       break;
     case 'select':
       props.values = field.values ?? [];
