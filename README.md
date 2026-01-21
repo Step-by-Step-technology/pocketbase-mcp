@@ -1,173 +1,173 @@
 # 🚀 PocketBase MCP Server
 
-Un serveur MCP (Model Context Protocol) complet pour gérer les migrations PocketBase via API REST. Génère et exécute des migrations pour créer, modifier et supprimer des collections PocketBase.
+A complete MCP (Model Context Protocol) server for managing PocketBase migrations via REST API. Generates and executes migrations to create, modify, and delete PocketBase collections.
 
-## 📥 Installation depuis GitHub
+## 📥 Installation from GitHub
 
-### Cloner et installer
+### Clone and install
 
 ```bash
-# Cloner le dépôt
+# Clone the repository
 git clone https://github.com/Step-by-Step-technology/pocketbase-mcp.git
 cd pocketbase-mcp
 
-# Installer les dépendances
+# Install dependencies
 npm install
 
-# Compiler TypeScript
+# Compile TypeScript
 npm run build
 ```
 
-### Configuration rapide
+### Quick setup
 
-1. **Créez un fichier de configuration MCP** (`~/.cline_desktop_config.json` ou équivalent):
+1. **Create an MCP configuration file** (`~/.cline_desktop_config.json` or equivalent):
 
 ```json
 {
   "mcpServers": {
     "pocketbase-mcp": {
       "command": "node",
-      "args": ["/chemin/absolu/vers/pocketbase-mcp/dist/index.js"],
+      "args": ["/absolute/path/to/pocketbase-mcp/dist/index.js"],
       "env": {
         "POCKETBASE_URL": "http://127.0.0.1:8090",
-        "POCKETBASE_TOKEN": "votre_token_admin_pocketbase",
-        "POCKETBASE_MIGRATIONS_DIR": "/chemin/absolu/vers/pb_migrations"
+        "POCKETBASE_TOKEN": "your_pocketbase_admin_token",
+        "POCKETBASE_MIGRATIONS_DIR": "/absolute/path/to/pb_migrations"
       }
     }
   }
 }
 ```
 
-1. **Redémarrez votre client MCP** (Cline Desktop, Cursor, etc.)
+1. **Restart your MCP client** (Cline Desktop, Cursor, etc.)
 
-2. **Testez l'installation**:
+2. **Test the installation**:
 
    ```bash
-   # Démarrer le serveur en mode développement
+   # Start the server in development mode
    npm run dev
    ```
 
-### 📦 Installation globale (optionnel)
+### 📦 Global installation (optional)
 
 ```bash
-# Installer globalement (si vous voulez l'utiliser comme CLI)
+# Install globally (if you want to use it as CLI)
 npm install -g .
 
-# Puis exécuter
+# Then run
 pocketbase-mcp
 ```
 
-**Dépôt GitHub:** <https://github.com/Step-by-Step-technology/pocketbase-mcp>
+**GitHub Repository:** <https://github.com/Step-by-Step-technology/pocketbase-mcp>
 
-## ✨ Fonctionnalités
+## ✨ Features
 
-### ✅ Outils Disponibles (20 outils complets)
+### ✅ Available Tools (20 complete tools)
 
-#### 🏗️ Outils de Migration (13 outils)
+#### 🏗️ Migration Tools (13 tools)
 
-| Outil | Description | Statut |
-|-------|-------------|--------|
-| `pocketbase-create-collection-migration` | Génère une migration pour créer une nouvelle collection | ✅ Fonctionne parfaitement |
-| `pocketbase-update-collection` | Génère une migration pour modifier les règles d'une collection | ✅ Nouveau |
-| `pocketbase-delete-collection` | Génère une migration pour supprimer une collection | ✅ Nouveau |
-| `pocketbase-update-collection-fields` | Génère une migration pour modifier les champs d'une collection | ✅ Nouveau |
-| `pocketbase-add-field-migration` | Génère une migration pour ajouter un seul champ à une collection | ✅ **NOUVEAU** |
-| `pocketbase-remove-field-migration` | Génère une migration pour supprimer un seul champ d'une collection | ✅ **NOUVEAU** |
-| `pocketbase-revert-migration` | Génère une migration pour revenir en arrière sur une migration précédente | ✅ **NOUVEAU** |
-| `pocketbase-execute-any-migration` | Exécute n'importe quel type de migration (création, modification, suppression) | ✅ Amélioré |
-| `pocketbase-execute-migration` | Exécute une migration de création (outil original préservé) | ✅ Fonctionne parfaitement |
-| `pocketbase-list-migrations` | Liste toutes les migrations disponibles | ✅ Existant |
-| `pocketbase-view-migration` | Affiche le contenu d'une migration | ✅ Existant |
-| `pocketbase-list-collections` | Liste toutes les collections PocketBase | ✅ Existant |
-| `pocketbase-view-collection` | Affiche les détails d'une collection | ✅ Existant |
+| Tool | Description | Status |
+|------|-------------|--------|
+| `pocketbase-create-collection-migration` | Generates a migration to create a new collection | ✅ Works perfectly |
+| `pocketbase-update-collection` | Generates a migration to modify collection rules | ✅ New |
+| `pocketbase-delete-collection` | Generates a migration to delete a collection | ✅ New |
+| `pocketbase-update-collection-fields` | Generates a migration to modify collection fields | ✅ New |
+| `pocketbase-add-field-migration` | Generates a migration to add a single field to a collection | ✅ **NEW** |
+| `pocketbase-remove-field-migration` | Generates a migration to remove a single field from a collection | ✅ **NEW** |
+| `pocketbase-revert-migration` | Generates a migration to revert a previous migration | ✅ **NEW** |
+| `pocketbase-execute-any-migration` | Executes any type of migration (creation, modification, deletion) | ✅ Improved |
+| `pocketbase-execute-migration` | Executes a creation migration (original tool preserved) | ✅ Works perfectly |
+| `pocketbase-list-migrations` | Lists all available migrations | ✅ Existing |
+| `pocketbase-view-migration` | Displays the content of a migration | ✅ Existing |
+| `pocketbase-list-collections` | Lists all PocketBase collections | ✅ Existing |
+| `pocketbase-view-collection` | Displays collection details | ✅ Existing |
 
-#### 📊 Outils CRUD (7 outils)
+#### 📊 CRUD Tools (7 tools)
 
-| Outil | Description | Statut |
-|-------|-------------|--------|
-| `pocketbase-fetch-record` | Récupère un record spécifique d'une collection PocketBase | ✅ **NOUVEAU** |
-| `pocketbase-list-records` | Liste tous les records d'une collection avec pagination | ✅ **NOUVEAU** |
-| `pocketbase-create-record` | Crée un nouveau record dans une collection PocketBase | ✅ **NOUVEAU** |
-| `pocketbase-update-record` | Met à jour un record existant dans une collection PocketBase | ✅ **NOUVEAU** |
-| `pocketbase-get-collection-schema` | Obtient le schéma (champs et types) d'une collection | ✅ **NOUVEAU** |
-| `pocketbase-upload-file` | Upload un fichier vers une collection PocketBase | ✅ **NOUVEAU** |
-| `pocketbase-download-file` | Télécharge un fichier depuis une collection PocketBase | ✅ **NOUVEAU** |
+| Tool | Description | Status |
+|------|-------------|--------|
+| `pocketbase-fetch-record` | Fetches a specific record from a PocketBase collection | ✅ **NEW** |
+| `pocketbase-list-records` | Lists all records from a collection with pagination | ✅ **NEW** |
+| `pocketbase-create-record` | Creates a new record in a PocketBase collection | ✅ **NEW** |
+| `pocketbase-update-record` | Updates an existing record in a PocketBase collection | ✅ **NEW** |
+| `pocketbase-get-collection-schema` | Gets the schema (fields and types) of a collection | ✅ **NEW** |
+| `pocketbase-upload-file` | Uploads a file to a PocketBase collection | ✅ **NEW** |
+| `pocketbase-download-file` | Downloads a file from a PocketBase collection | ✅ **NEW** |
 
-**Total: 20 outils MCP complets** - Migration + CRUD + Gestion de fichiers
+**Total: 20 complete MCP tools** - Migration + CRUD + File management
 
 ## 🚀 Installation (Alternative)
 
-Si vous avez déjà cloné le projet localement ou si vous travaillez sur une version existante:
+If you have already cloned the project locally or are working on an existing version:
 
-### Prérequis
+### Prerequisites
 
 - Node.js 18+
-- PocketBase en cours d'exécution
-- Token d'administration PocketBase
+- PocketBase running
+- PocketBase admin token
 
-### Installation locale
+### Local installation
 
 ```bash
-# Se déplacer dans le dossier pocketbase-mcp
+# Move to the pocketbase-mcp folder
 cd pocketbase-mcp
 
-# Installer les dépendances
+# Install dependencies
 npm install
 
-# Compiler TypeScript
+# Compile TypeScript
 npm run build
 ```
 
-**Note:** Pour une installation complète depuis GitHub, référez-vous à la section [📥 Installation depuis GitHub](#-installation-depuis-github) ci-dessus.
+**Note:** For a complete installation from GitHub, refer to the [📥 Installation from GitHub](#-installation-from-github) section above.
 
 ### Configuration
 
-Les variables d'environnement sont configurées dans le fichier de configuration MCP (`cline_mcp_settings.json`):
+Environment variables are configured in the MCP configuration file (`cline_mcp_settings.json`):
 
 ```json
 {
   "mcpServers": {
     "pocketbase-mcp": {
       "command": "node",
-      "args": ["/chemin/absolu/pocketbase-mcp/dist/index.js"],
+      "args": ["/absolute/path/pocketbase-mcp/dist/index.js"],
       "env": {
         "POCKETBASE_URL": "http://127.0.0.1:8090",
-        "POCKETBASE_TOKEN": "votre_token_admin_pocketbase",
-        "POCKETBASE_MIGRATIONS_DIR": "/chemin/absolu/pb_migrations"
+        "POCKETBASE_TOKEN": "your_pocketbase_admin_token",
+        "POCKETBASE_MIGRATIONS_DIR": "/absolute/path/pb_migrations"
       }
     }
   }
 }
 ```
 
-**Variables requises:**
+**Required variables:**
 
-- `POCKETBASE_URL`: URL de votre instance PocketBase (ex: `http://127.0.0.1:8090`)
-- `POCKETBASE_TOKEN`: Token d'administration PocketBase (obtenu via l'interface admin)
-- `POCKETBASE_MIGRATIONS_DIR`: Chemin absolu vers le répertoire des migrations
+- `POCKETBASE_URL`: URL of your PocketBase instance (e.g., `http://127.0.0.1:8090`)
+- `POCKETBASE_TOKEN`: PocketBase admin token (obtained via admin interface)
+- `POCKETBASE_MIGRATIONS_DIR`: Absolute path to the migrations directory
 
-## 📦 Structure du Projet
+## 📦 Project Structure
 
 ```
 pocketbase-mcp/
 ├── src/
-│   ├── index.ts                    # Point d'entrée MCP
-│   ├── pocketbase-migration.ts     # Générateur de migrations
-│   └── pocketbase-tools.ts         # Tous les outils MCP
-├── dist/                           # Fichiers compilés
-├── pb_migrations/                  # Migrations générées
+│   ├── index.ts                    # MCP entry point
+│   ├── pocketbase-migration.ts     # Migration generator
+│   └── pocketbase-tools.ts         # All MCP tools
+├── dist/                           # Compiled files
+├── pb_migrations/                  # Generated migrations
 ├── package.json
 ├── tsconfig.json
 ├── README.md
 └── GUIDE_COMPLET.md
 ```
 
-## 🛠️ Utilisation
+## 🛠️ Usage
 
-### Démarrer le Serveur MCP
+### Start the MCP Server
 
 ```bash
-# Développement
+# Development
 npm run dev
 
 # Production
@@ -175,29 +175,29 @@ npm run build
 node dist/index.js
 ```
 
-### Configuration Cline Desktop
+### Cline Desktop Configuration
 
-Ajoutez à `~/.cline_desktop_config.json`:
+Add to `~/.cline_desktop_config.json`:
 
 ```json
 {
   "mcpServers": {
     "pocketbase-mcp": {
       "command": "node",
-      "args": ["/chemin/absolu/pocketbase-mcp/dist/index.js"],
+      "args": ["/absolute/path/pocketbase-mcp/dist/index.js"],
       "env": {
         "POCKETBASE_URL": "http://127.0.0.1:8090",
-        "POCKETBASE_TOKEN": "votre_token",
-        "POCKETBASE_MIGRATIONS_DIR": "/chemin/absolu/pb_migrations"
+        "POCKETBASE_TOKEN": "your_token",
+        "POCKETBASE_MIGRATIONS_DIR": "/absolute/path/pb_migrations"
       }
     }
   }
 }
 ```
 
-## 📝 Exemples Complets
+## 📝 Complete Examples
 
-### 1. Créer une Collection
+### 1. Create a Collection
 
 ```json
 {
@@ -226,7 +226,7 @@ Ajoutez à `~/.cline_desktop_config.json`:
 }
 ```
 
-### 2. Modifier les Règles d'une Collection
+### 2. Modify Collection Rules
 
 ```json
 {
@@ -238,7 +238,7 @@ Ajoutez à `~/.cline_desktop_config.json`:
 }
 ```
 
-### 3. Modifier les Champs d'une Collection
+### 3. Modify Collection Fields
 
 ```json
 {
@@ -272,7 +272,7 @@ Ajoutez à `~/.cline_desktop_config.json`:
 }
 ```
 
-### 4. Supprimer une Collection
+### 4. Delete a Collection
 
 ```json
 {
@@ -280,7 +280,7 @@ Ajoutez à `~/.cline_desktop_config.json`:
 }
 ```
 
-### 5. Exécuter une Migration
+### 5. Execute a Migration
 
 ```json
 {
@@ -288,7 +288,7 @@ Ajoutez à `~/.cline_desktop_config.json`:
 }
 ```
 
-### 6. Ajouter un Champ à une Collection
+### 6. Add a Field to a Collection
 
 ```json
 {
@@ -302,7 +302,7 @@ Ajoutez à `~/.cline_desktop_config.json`:
 }
 ```
 
-### 7. Supprimer un Champ d'une Collection
+### 7. Remove a Field from a Collection
 
 ```json
 {
@@ -311,7 +311,7 @@ Ajoutez à `~/.cline_desktop_config.json`:
 }
 ```
 
-### 8. Revenir en Arrière sur une Migration
+### 8. Revert a Migration
 
 ```json
 {
@@ -319,40 +319,40 @@ Ajoutez à `~/.cline_desktop_config.json`:
 }
 ```
 
-## 🔄 Workflow Complet
+## 🔄 Complete Workflow
 
-### Étape 1: Créer une Migration
-
-```bash
-# Utiliser l'outil pocketbase-create-collection-migration
-# → Génère un fichier dans pb_migrations/
-```
-
-### Étape 2: Exécuter la Migration
+### Step 1: Create a Migration
 
 ```bash
-# Utiliser l'outil pocketbase-execute-any-migration
-# → Exécute la migration via API REST
+# Use the pocketbase-create-collection-migration tool
+# → Generates a file in pb_migrations/
 ```
 
-### Étape 3: Vérifier
+### Step 2: Execute the Migration
 
 ```bash
-# Utiliser pocketbase-list-collections
-# → Vérifie que la collection a été créée
+# Use the pocketbase-execute-any-migration tool
+# → Executes the migration via REST API
 ```
 
-### Étape 4: Modifier si nécessaire
+### Step 3: Verify
 
 ```bash
-# Utiliser pocketbase-update-collection
-# → Génère une migration de modification
-# → Exécuter avec pocketbase-execute-any-migration
+# Use pocketbase-list-collections
+# → Verifies that the collection was created
 ```
 
-## 🎯 Cas d'Utilisation Avancés
+### Step 4: Modify if necessary
 
-### Migration de Création avec Règles d'Authentification
+```bash
+# Use pocketbase-update-collection
+# → Generates a modification migration
+# → Execute with pocketbase-execute-any-migration
+```
+
+## 🎯 Advanced Use Cases
+
+### Creation Migration with Authentication Rules
 
 ```json
 {
@@ -378,7 +378,7 @@ Ajoutez à `~/.cline_desktop_config.json`:
 }
 ```
 
-### Migration de Collection d'Authentification
+### Authentication Collection Migration
 
 ```json
 {
@@ -401,18 +401,18 @@ Ajoutez à `~/.cline_desktop_config.json`:
 }
 ```
 
-## ⚙️ Configuration Technique
+## ⚙️ Technical Configuration
 
-### Variables d'Environnement
+### Environment Variables
 
-| Variable | Description | Valeur par défaut |
-|----------|-------------|-------------------|
-| `POCKETBASE_URL` | URL de l'instance PocketBase | `http://127.0.0.1:8090` |
-| `POCKETBASE_TOKEN` | Token d'administration PocketBase | (requis) |
-| `POCKETBASE_ADMIN_TOKEN` | Alternative au token | (optionnel) |
-| `POCKETBASE_MIGRATIONS_DIR` | Répertoire des migrations | `./pb_migrations` |
+| Variable | Description | Default Value |
+|----------|-------------|---------------|
+| `POCKETBASE_URL` | URL of the PocketBase instance | `http://127.0.0.1:8090` |
+| `POCKETBASE_TOKEN` | PocketBase admin token | (required) |
+| `POCKETBASE_ADMIN_TOKEN` | Alternative to token | (optional) |
+| `POCKETBASE_MIGRATIONS_DIR` | Migrations directory | `./pb_migrations` |
 
-### Scripts NPM
+### NPM Scripts
 
 ```json
 {
@@ -424,15 +424,15 @@ Ajoutez à `~/.cline_desktop_config.json`:
 }
 ```
 
-## 🆕 Nouvelles Fonctionnalités (Janvier 2026)
+## 🆕 New Features (January 2026)
 
-### ✨ Ajout de 3 Nouveaux Outils
+### ✨ Addition of 3 New Tools
 
 #### 1. **`pocketbase-add-field-migration`**
 
-- **Objectif**: Ajouter un seul champ à une collection existante
-- **Avantage**: Granularité fine - pas besoin de réécrire tous les champs
-- **Exemple d'utilisation**:
+- **Purpose**: Add a single field to an existing collection
+- **Advantage**: Fine granularity - no need to rewrite all fields
+- **Usage example**:
 
   ```json
   {
@@ -448,9 +448,9 @@ Ajoutez à `~/.cline_desktop_config.json`:
 
 #### 2. **`pocketbase-remove-field-migration`**
 
-- **Objectif**: Supprimer un seul champ d'une collection existante
-- **Avantage**: Suppression ciblée sans affecter les autres champs
-- **Exemple d'utilisation**:
+- **Purpose**: Remove a single field from an existing collection
+- **Advantage**: Targeted removal without affecting other fields
+- **Usage example**:
 
   ```json
   {
@@ -461,9 +461,9 @@ Ajoutez à `~/.cline_desktop_config.json`:
 
 #### 3. **`pocketbase-revert-migration`**
 
-- **Objectif**: Revenir en arrière sur une migration précédente
-- **Avantage**: Sécurité - possibilité d'annuler les changements
-- **Exemple d'utilisation**:
+- **Purpose**: Revert a previous migration
+- **Advantage**: Safety - ability to undo changes
+- **Usage example**:
 
   ```json
   {
@@ -471,99 +471,99 @@ Ajoutez à `~/.cline_desktop_config.json`:
   }
   ```
 
-### 🔧 Amélioration de `pocketbase-execute-any-migration`
+### 🔧 Improvement of `pocketbase-execute-any-migration`
 
-- **Nouvelle détection**: Reconnaît maintenant 6 types de migrations:
-  1. `create` - Création de collection
-  2. `update` - Modification de règles
-  3. `update_fields` - Modification de tous les champs
-  4. `add_field` - Ajout d'un seul champ
-  5. `remove_field` - Suppression d'un seul champ
-  6. `delete` - Suppression de collection
+- **New detection**: Now recognizes 6 types of migrations:
+  1. `create` - Collection creation
+  2. `update` - Rule modification
+  3. `update_fields` - Modification of all fields
+  4. `add_field` - Addition of a single field
+  5. `remove_field` - Removal of a single field
+  6. `delete` - Collection deletion
 
-- **Compatibilité**: Ne casse pas l'existant - l'outil original `pocketbase-execute-migration` est préservé
+- **Compatibility**: Doesn't break existing functionality - the original `pocketbase-execute-migration` tool is preserved
 
-## 🧪 Tests
+## 🧪 Testing
 
-Le projet a été testé avec succès avec:
+The project has been successfully tested with:
 
-- ✅ **Tests manuels** de toutes les fonctionnalités
-- ✅ **Migrations réelles** exécutées sur PocketBase
-- ✅ **Validation complète** des 13 outils MCP
-- ✅ **Tests des nouvelles fonctionnalités**:
-  - Ajout de champ: ✅ Fonctionne
-  - Suppression de champ: ✅ Fonctionne
-  - Revert de migration: ✅ Fonctionne
+- ✅ **Manual tests** of all features
+- ✅ **Real migrations** executed on PocketBase
+- ✅ **Complete validation** of the 13 MCP tools
+- ✅ **Tests of new features**:
+  - Field addition: ✅ Works
+  - Field removal: ✅ Works
+  - Migration revert: ✅ Works
 
-Pour tester le serveur MCP:
+To test the MCP server:
 
 ```bash
-# Démarrer le serveur en mode développement
+# Start the server in development mode
 npm run dev
 
-# Puis utiliser les outils via Cline Desktop ou autre client MCP
+# Then use the tools via Cline Desktop or other MCP client
 ```
 
-## 🔧 Développement
+## 🔧 Development
 
-### Structure du Code
+### Code Structure
 
-- **`src/pocketbase-migration.ts`**: Logique de génération des migrations
-  - `createMigrationFile()`: Création de collections
-  - `createUpdateMigrationFile()`: Modification de collections
-  - `createDeleteMigrationFile()`: Suppression de collections
-  - `createUpdateFieldsMigrationFile()`: Modification de champs
-  - `parseMigrationFields()`: Parsing des champs depuis les migrations
+- **`src/pocketbase-migration.ts`**: Migration generation logic
+  - `createMigrationFile()`: Collection creation
+  - `createUpdateMigrationFile()`: Collection modification
+  - `createDeleteMigrationFile()`: Collection deletion
+  - `createUpdateFieldsMigrationFile()`: Field modification
+  - `parseMigrationFields()`: Parsing fields from migrations
 
-- **`src/pocketbase-tools.ts`**: Définition des outils MCP
-  - 10 outils complets avec validation Zod
-  - Gestion d'erreurs robuste
-  - API REST vers PocketBase
+- **`src/pocketbase-tools.ts`**: MCP tool definitions
+  - 10 complete tools with Zod validation
+  - Robust error handling
+  - REST API to PocketBase
 
-- **`src/index.ts`**: Serveur MCP principal
-  - Configuration du serveur
-  - Gestion des connexions
-  - Logging et monitoring
+- **`src/index.ts`**: Main MCP server
+  - Server configuration
+  - Connection management
+  - Logging and monitoring
 
-### Ajouter un Nouvel Outil
+### Add a New Tool
 
-1. Ajouter la définition dans `pocketbase-tools.ts`
-2. Implémenter la logique métier
-3. Tester manuellement avec les outils MCP
-4. Documenter dans le README
+1. Add the definition in `pocketbase-tools.ts`
+2. Implement the business logic
+3. Test manually with MCP tools
+4. Document in the README
 
-## 📊 Statistiques du Projet
+## 📊 Project Statistics
 
-- **10 outils MCP** complets
-- **4 types de migrations** supportés (création, modification, suppression, modification de champs)
-- **100% TypeScript** avec validation Zod
-- **API REST complète** vers PocketBase
-- **Gestion d'erreurs** robuste
-- **Documentation complète**
+- **10 complete MCP tools**
+- **4 types of migrations** supported (creation, modification, deletion, field modification)
+- **100% TypeScript** with Zod validation
+- **Complete REST API** to PocketBase
+- **Robust error handling**
+- **Complete documentation**
 
-## 🚀 Déploiement sur GitHub
+## 🚀 Deployment on GitHub
 
-### Préparer le Projet pour GitHub
+### Prepare the Project for GitHub
 
 ```bash
-# Initialiser git
+# Initialize git
 git init
 
-# Ajouter les fichiers
+# Add files
 git add .
 
-# Commit initial
-git commit -m "Initial commit: PocketBase MCP Server complet"
+# Initial commit
+git commit -m "Initial commit: Complete PocketBase MCP Server"
 
-# Créer un repo sur GitHub
-# Lier le repo distant
-git remote add origin https://github.com/votre-username/pocketbase-mcp.git
+# Create a repo on GitHub
+# Link the remote repo
+git remote add origin https://github.com/your-username/pocketbase-mcp.git
 
-# Pousser le code
+# Push the code
 git push -u origin main
 ```
 
-### Fichiers à Inclure dans .gitignore
+### Files to Include in .gitignore
 
 ```gitignore
 # Dependencies
@@ -576,7 +576,7 @@ dist/
 .env
 .env.local
 
-# PocketBase migrations (optionnel)
+# PocketBase migrations (optional)
 pb_migrations/
 
 # IDE
@@ -587,9 +587,9 @@ pb_migrations/
 .DS_Store
 ```
 
-### Package.json pour Publication
+### Package.json for Publication
 
-Assurez-vous que votre `package.json` contient:
+Make sure your `package.json` contains:
 
 ```json
 {
@@ -611,66 +611,4 @@ Assurez-vous que votre `package.json` contient:
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
-    "typescript": "^5.0.0",
-    "tsx": "^4.0.0"
-  }
-}
-```
-
-## 🤝 Contribution
-
-1. Fork le projet
-2. Créer une branche (`git checkout -b feature/amazing-feature`)
-3. Commit les changements (`git commit -m 'Add amazing feature'`)
-4. Push vers la branche (`git push origin feature/amazing-feature`)
-5. Ouvrir une Pull Request
-
-## 📄 Licence
-
-Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
-
-## 🙏 Remerciements
-
-- [Model Context Protocol](https://modelcontextprotocol.io) pour le framework MCP
-- [PocketBase](https://pocketbase.io) pour l'excellente base de données
-- La communauté Cline pour les outils d'IA
-
-## ⚠️ Comportements spécifiques de PocketBase
-
-### Champs number avec la contrainte "required"
-
-**Problème identifié:** Dans PocketBase, pour un champ de type `number` avec la contrainte `required: true`, la valeur `0` est considérée comme "blank" (vide) et est rejetée avec l'erreur "Cannot be blank."
-
-**Explication:** Ce n'est pas une propriété `nonZero` distincte, mais un comportement spécifique de PocketBase pour les champs numériques requis. La valeur `0` est traitée comme une valeur "falsy" et donc considérée comme vide.
-
-**Solution:** Si vous avez besoin d'autoriser la valeur `0` (par exemple pour des produits gratuits), vous devez:
-
-1. Définir le champ avec `required: false`
-2. Valider côté application que le champ est fourni (même s'il est 0)
-
-**Exemple de migration corrigée:**
-
-```json
-{
-  "collectionName": "products",
-  "fields": [
-    {
-      "name": "price",
-      "type": "number",
-      "required": false,  // ← false pour autoriser 0
-      "min": 0,
-      "max": 1000000
-    }
-  ]
-}
-```
-
-**Alternative:** Utiliser une validation personnalisée côté application pour s'assurer que le champ n'est pas `null` ou `undefined`, tout en acceptant la valeur `0`.
-
-## 📞 Support
-
-Pour les questions et le support:
-
-- Ouvrir une issue sur GitHub
-
----
+    "types
