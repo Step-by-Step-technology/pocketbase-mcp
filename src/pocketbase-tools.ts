@@ -268,14 +268,42 @@ export function registerPocketbaseTools(server: any) {
           body: JSON.stringify({
             name: collectionName,
             type: 'base',
-            fields: fields.map(f => ({
-              name: f.name,
-              type: f.type,
-              required: f.required || false,
-              max: f.max || 0,
-              min: f.min || 0,
-              values: f.values || [],
-            })),
+            fields: fields.map(f => {
+              // Construire l'objet champ de base
+              const fieldObj: any = {
+                name: f.name,
+                type: f.type,
+                required: f.required || false,
+              };
+
+              // Ajouter les propriétés spécifiques au type
+              if (f.type === 'text' || f.type === 'number') {
+                if (f.max !== undefined && f.max > 0) fieldObj.max = f.max;
+              }
+
+              if (f.type === 'number' && f.min !== undefined) {
+                fieldObj.min = f.min;
+              }
+
+              if (f.type === 'select' && f.values) {
+                fieldObj.values = f.values;
+              }
+
+              // Propriétés spécifiques aux relations
+              if (f.type === 'relation' && f.collectionId) {
+                fieldObj.collectionId = f.collectionId;
+                fieldObj.maxSelect = f.maxSelect || 1;
+                fieldObj.cascadeDelete = f.cascadeDelete || false;
+              }
+
+              // Propriétés spécifiques aux fichiers
+              if (f.type === 'file') {
+                fieldObj.maxSelect = f.maxSelect || 1;
+                fieldObj.maxSize = 5242880; // 5MB default
+              }
+
+              return fieldObj;
+            }),
             listRule: null,
             createRule: null,
             updateRule: null,
@@ -851,14 +879,42 @@ export function registerPocketbaseTools(server: any) {
             const fields = parseMigrationFields(content);
 
             const updateData = {
-              fields: fields.map(f => ({
-                name: f.name,
-                type: f.type,
-                required: f.required || false,
-                max: f.max || 0,
-                min: f.min || 0,
-                values: f.values || [],
-              }))
+              fields: fields.map(f => {
+                // Construire l'objet champ de base
+                const fieldObj: any = {
+                  name: f.name,
+                  type: f.type,
+                  required: f.required || false,
+                };
+
+                // Ajouter les propriétés spécifiques au type
+                if (f.type === 'text' || f.type === 'number') {
+                  if (f.max !== undefined && f.max > 0) fieldObj.max = f.max;
+                }
+
+                if (f.type === 'number' && f.min !== undefined) {
+                  fieldObj.min = f.min;
+                }
+
+                if (f.type === 'select' && f.values) {
+                  fieldObj.values = f.values;
+                }
+
+                // Propriétés spécifiques aux relations
+                if (f.type === 'relation' && f.collectionId) {
+                  fieldObj.collectionId = f.collectionId;
+                  fieldObj.maxSelect = f.maxSelect || 1;
+                  fieldObj.cascadeDelete = f.cascadeDelete || false;
+                }
+
+                // Propriétés spécifiques aux fichiers
+                if (f.type === 'file') {
+                  fieldObj.maxSelect = f.maxSelect || 1;
+                  fieldObj.maxSize = 5242880; // 5MB default
+                }
+
+                return fieldObj;
+              })
             };
 
             const updateResponse = await fetch(`${pbUrl}/api/collections/${collection.id}`, {

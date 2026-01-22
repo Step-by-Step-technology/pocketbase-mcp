@@ -67,14 +67,14 @@ pocketbase-mcp
 
 | Tool | Description | Status |
 |------|-------------|--------|
-| `pocketbase-create-collection-migration` | Generates a migration to create a new collection | ✅ Works perfectly |
+| `pocketbase-create-collection-migration` | Generates a migration to create a new collection (supports relation fields) | ✅ Works perfectly |
 | `pocketbase-update-collection` | Generates a migration to modify collection rules | ✅ New |
 | `pocketbase-delete-collection` | Generates a migration to delete a collection | ✅ New |
-| `pocketbase-update-collection-fields` | Generates a migration to modify collection fields | ✅ New |
-| `pocketbase-add-field-migration` | Generates a migration to add a single field to a collection | ✅ **NEW** |
+| `pocketbase-update-collection-fields` | Generates a migration to modify collection fields (supports relation fields) | ✅ New |
+| `pocketbase-add-field-migration` | Generates a migration to add a single field to a collection (supports relation fields) | ✅ **NEW** |
 | `pocketbase-remove-field-migration` | Generates a migration to remove a single field from a collection | ✅ **NEW** |
 | `pocketbase-revert-migration` | Generates a migration to revert a previous migration | ✅ **NEW** |
-| `pocketbase-execute-any-migration` | Executes any type of migration (creation, modification, deletion) | ✅ Improved |
+| `pocketbase-execute-any-migration` | Executes any type of migration (creation, modification, deletion) - now supports relation fields | ✅ Improved |
 | `pocketbase-execute-migration` | Executes a creation migration (original tool preserved) | ✅ Works perfectly |
 | `pocketbase-list-migrations` | Lists all available migrations | ✅ Existing |
 | `pocketbase-view-migration` | Displays the content of a migration | ✅ Existing |
@@ -483,6 +483,118 @@ Add to `~/.cline_desktop_config.json`:
 
 - **Compatibility**: Doesn't break existing functionality - the original `pocketbase-execute-migration` tool is preserved
 
+## 🔗 Relation Fields Support (January 2026)
+
+### ✨ Enhanced Support for Relation Fields
+
+The MCP server now fully supports **relation fields** in PocketBase collections. This includes creating, updating, and managing collections with foreign key relationships between collections.
+
+#### Key Improvements
+
+1. **Fixed `parseMigrationFields()` function** in `src/pocketbase-migration.ts`:
+   - Correctly handles `collectionId` parameter for relation fields
+   - Properly serializes relation field configurations
+   - Supports `maxSelect` and `cascadeDelete` options
+
+2. **Enhanced `pocketbase-execute-any-migration` tool**:
+   - Now correctly processes migration files containing relation fields
+   - Properly handles the execution of migrations with complex field relationships
+
+3. **Updated `pocketbase-update-collection-fields` tool**:
+   - Supports adding/modifying relation fields in existing collections
+   - Maintains backward compatibility with existing collections
+
+### 📋 Relation Field Examples
+
+#### Creating a Collection with Relation Fields
+
+```json
+{
+  "collectionName": "user_roles",
+  "fields": [
+    {
+      "name": "user_ref",
+      "type": "relation",
+      "required": true,
+      "collectionId": "users",
+      "maxSelect": 1,
+      "cascadeDelete": false
+    },
+    {
+      "name": "role_ref",
+      "type": "relation",
+      "required": true,
+      "collectionId": "roles",
+      "maxSelect": 1,
+      "cascadeDelete": false
+    },
+    {
+      "name": "assigned_at",
+      "type": "date",
+      "required": true
+    },
+    {
+      "name": "assigned_by",
+      "type": "relation",
+      "required": true,
+      "collectionId": "users",
+      "maxSelect": 1,
+      "cascadeDelete": false
+    }
+  ],
+  "type": "base"
+}
+```
+
+#### Adding a Relation Field to an Existing Collection
+
+```json
+{
+  "collectionName": "posts",
+  "field": {
+    "name": "author",
+    "type": "relation",
+    "required": true,
+    "collectionId": "users",
+    "maxSelect": 1,
+    "cascadeDelete": true
+  }
+}
+```
+
+### 🛠️ Technical Details
+
+The fixes address the following issues:
+
+1. **Bug in `parseMigrationFields()`**: The function was not correctly handling the `collectionId` parameter for relation fields, causing migrations to fail when creating collections with relations.
+
+2. **Migration Execution**: The `pocketbase-execute-any-migration` tool now properly detects and executes migrations containing relation fields without errors.
+
+3. **Field Configuration**: Relation fields now support all PocketBase options:
+   - `collectionId`: The ID of the related collection (required)
+   - `maxSelect`: Maximum number of related records (default: 1)
+   - `cascadeDelete`: Whether to delete related records when the parent is deleted (default: false)
+
+### ✅ Testing
+
+The relation field support has been thoroughly tested with:
+
+- ✅ **Creating collections with relation fields**: Works perfectly
+- ✅ **Adding relation fields to existing collections**: Works perfectly
+- ✅ **Executing migrations with relation fields**: Works perfectly
+- ✅ **Real-world use case**: User roles system with `users` ↔ `roles` relationships
+
+### 🎯 Real-World Example: User Roles System
+
+A complete user roles system was implemented using the enhanced relation field support:
+
+1. **`roles` collection**: Stores role definitions (level 0-9, level 99 for super admin)
+2. **`user_roles` collection**: Junction table linking users to roles with relation fields
+3. **Access rules**: Configured with proper authentication rules
+4. **Default role assignment**: All new users automatically get level 1 (basic user)
+
+This demonstrates the practical application of the relation field support in building complex database schemas with PocketBase.
+
 ## 🧪 Testing
 
 The project has been successfully tested with:
@@ -611,4 +723,7 @@ Make sure your `package.json` contains:
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
-    "types
+    "typescript": "^5.0.0",
+    "tsx": "^4.0.0"
+  }
+}

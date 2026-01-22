@@ -181,8 +181,9 @@ function createMigrationFile(
 function parseMigrationFields(content: string): FieldDefinition[] {
   const fields: FieldDefinition[] = [];
 
-  // Chercher tous les champs dans le fichier
-  const fieldRegex = /new (\w+)\({([^}]+)}\)/g;
+  // Chercher tous les champs dans le fichier - ignorer Collection({...})
+  // Le regex capture new FieldType({...}) où {...} peut contenir des {}
+  const fieldRegex = /new (TextField|NumberField|EmailField|URLField|BoolField|DateField|SelectField|JSONField|FileField|RelationField|AutodateField)\({((?:[^{}]|\{[^{}]*\})*)}\)/g;
   let match;
 
   while ((match = fieldRegex.exec(content)) !== null) {
@@ -196,6 +197,9 @@ function parseMigrationFields(content: string): FieldDefinition[] {
     const maxMatch = fieldContent.match(/max:\s*(\d+)/);
     const minMatch = fieldContent.match(/min:\s*(\d+)/);
     const valuesMatch = fieldContent.match(/values:\s*\[([^\]]+)\]/);
+    const collectionIdMatch = fieldContent.match(/collectionId:\s*"([^"]+)"/);
+    const maxSelectMatch = fieldContent.match(/maxSelect:\s*(\d+)/);
+    const cascadeDeleteMatch = fieldContent.match(/cascadeDelete:\s*(true|false)/);
 
     if (nameMatch) {
       const fieldName = nameMatch[1];
@@ -234,6 +238,19 @@ function parseMigrationFields(content: string): FieldDefinition[] {
       if (valuesMatch && fieldTypeInternal === 'select') {
         const valuesStr = valuesMatch[1];
         field.values = valuesStr.split(',').map(v => v.trim().replace(/"/g, ''));
+      }
+
+      // Propriétés spécifiques aux relations
+      if (fieldTypeInternal === 'relation' && collectionIdMatch) {
+        field.collectionId = collectionIdMatch[1];
+      }
+
+      if (maxSelectMatch && (fieldTypeInternal === 'relation' || fieldTypeInternal === 'file')) {
+        field.maxSelect = parseInt(maxSelectMatch[1], 10);
+      }
+
+      if (cascadeDeleteMatch && fieldTypeInternal === 'relation') {
+        field.cascadeDelete = cascadeDeleteMatch[1] === 'true';
       }
 
       fields.push(field);
